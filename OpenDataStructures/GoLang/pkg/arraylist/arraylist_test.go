@@ -27,3 +27,11 @@ func TestNewArrayListWithSuppliedCapacity(t *testing.T) {
 		t.Errorf("expected data capacity %d, got %d", DEFAULT_INITIAL_CAPACITY, len(list.data))
 	}
 }
+
+func TestSize(t *testing.T) {
+	list := ArrayList[int]{
+		size: 7,
+	}
+
+	assert.Equal(t, 7, list.Size())
+}
