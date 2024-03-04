@@ -1,0 +1,29 @@
+package arraylist
+
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestNewArrayListWithDefaultCapacity(t *testing.T) {
+	list := NewArrayList[int]()
+	if list.size != 0 {
+		t.Errorf("expected size 0, got %d", list.size)
+	}
+	if len(list.data) != DEFAULT_INITIAL_CAPACITY {
+		t.Errorf("expected data capacity %d, got %d", DEFAULT_INITIAL_CAPACITY, len(list.data))
+	}
+}
+
+func TestNewArrayListWithSuppliedCapacity(t *testing.T) {
+	suppliedCapacity := 4
+	list := NewArrayList[int](suppliedCapacity)
+	assert.NotEqualValues(t, DEFAULT_INITIAL_CAPACITY, suppliedCapacity, "Default value is the same as supplied capacity.  Change the supplied value for accurate assertion in test.")
+	if list.size != 0 {
+		t.Errorf("expected size 0, got %d", list.size)
+	}
+	if len(list.data) != 4 {
+		t.Errorf("expected data capacity %d, got %d", DEFAULT_INITIAL_CAPACITY, len(list.data))
+	}
+}
