@@ -17,13 +17,13 @@ func TestNewArrayListWithDefaultCapacity(t *testing.T) {
 }
 
 func TestNewArrayListWithSuppliedCapacity(t *testing.T) {
-	suppliedCapacity := 4
+	suppliedCapacity := 9
 	list := NewArrayList[int](suppliedCapacity)
 	assert.NotEqualValues(t, DEFAULT_INITIAL_CAPACITY, suppliedCapacity, "Default value is the same as supplied capacity.  Change the supplied value for accurate assertion in test.")
 	if list.size != 0 {
 		t.Errorf("expected size 0, got %d", list.size)
 	}
-	if len(list.data) != 4 {
+	if len(list.data) != suppliedCapacity {
 		t.Errorf("expected data capacity %d, got %d", DEFAULT_INITIAL_CAPACITY, len(list.data))
 	}
 }
@@ -38,12 +38,11 @@ func TestSize(t *testing.T) {
 
 func TestSetReturnsIndexOutOfRangeErrors(t *testing.T) {
 	list := NewArrayList[string]()
-	_, underErr := list.Set(-1, "A")
 
+	_, underErr := list.Set(-1, "A")
 	assert.ErrorContains(t, underErr, "Index out of range")
 
 	_, overErr := list.Set(1, "A")
-
 	assert.ErrorContains(t, overErr, "Index out of range")
 }
 
@@ -83,4 +82,62 @@ func TestGetReturnsExistingItem(t *testing.T) {
 
 	assert.NoError(t, err)
 	assert.Equal(t, "A", actual)
+}
+
+func TestAddReturnsIndexOutOfRangeErrors(t *testing.T) {
+	list := NewArrayList[string]()
+	underErr := list.Add(-1, "A")
+	assert.ErrorContains(t, underErr, "Index out of range")
+
+	overErr := list.Add(1, "A")
+	assert.ErrorContains(t, overErr, "Index out of range")
+}
+
+func TestAddBasic(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"", "", ""},
+		size: 0,
+		head: 0,
+	}
+
+	err := list.Add(0, "A")
+	assert.NoError(t, err)
+	assert.Equal(t, list.size, 1)
+	assert.Equal(t, []string{"A", "", ""}, list.data)
+}
+
+func TestAddResizes(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"A", "B", "C"},
+		size: 3,
+		head: 0,
+	}
+
+	err := list.Add(3, "D")
+	assert.NoError(t, err)
+	assert.Equal(t, []string{"A", "B", "C", "D", "", ""}, list.data)
+}
+
+func TestAddPushesLeft(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"A", "C", "D", "E", "_"},
+		size: 4,
+		head: 0,
+	}
+
+	err := list.Add(1, "B")
+	assert.NoError(t, err)
+	assert.Equal(t, []string{"B", "C", "D", "E", "A"}, list.data)
+}
+
+func TestAddPushesRight(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"_", "A", "B", "D", "E"},
+		size: 4,
+		head: 1,
+	}
+
+	err := list.Add(2, "C")
+	assert.NoError(t, err)
+	assert.Equal(t, []string{"E", "A", "B", "C", "D"}, list.data)
 }
