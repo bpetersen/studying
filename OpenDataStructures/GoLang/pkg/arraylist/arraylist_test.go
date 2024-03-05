@@ -141,3 +141,98 @@ func TestAddPushesRight(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, []string{"E", "A", "B", "C", "D"}, list.data)
 }
+
+func TestRemoveReturnsIndexOutOfRangeErrors(t *testing.T) {
+	list := NewArrayList[string]()
+	_, underErr := list.Remove(-1)
+	assert.ErrorContains(t, underErr, "Index out of range")
+
+	_, overErr := list.Remove(1)
+	assert.ErrorContains(t, overErr, "Index out of range")
+}
+
+func TestRemoveBasic(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"A", "B", "C", "D", "E"},
+		size: 5,
+		head: 0,
+	}
+
+	actual, err := list.Remove(4)
+	assert.NoError(t, err)
+	assert.Equal(t, "E", actual)
+	assert.Equal(t, 4, list.size)
+	assert.Equal(t, []string{"A", "B", "C", "D", ""}, list.data)
+}
+
+func TestRemoveRightSideDoesntChangeHead(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"C", "D", "E", "A", "B"},
+		size: 5,
+		head: 3,
+	}
+
+	actual, err := list.Remove(3)
+	assert.NoError(t, err)
+	assert.Equal(t, "D", actual)
+	assert.Equal(t, 4, list.size)
+	assert.Equal(t, 3, list.head)
+	assert.Equal(t, []string{"C", "E", "", "A", "B"}, list.data)
+}
+
+func TestRemoveLeftSideIncrementsHead(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"C", "D", "E", "A", "B"},
+		size: 5,
+		head: 3,
+	}
+
+	actual, err := list.Remove(1)
+	assert.NoError(t, err)
+	assert.Equal(t, "B", actual)
+	assert.Equal(t, 4, list.size)
+	assert.Equal(t, 4, list.head)
+	assert.Equal(t, []string{"C", "D", "E", "", "A"}, list.data)
+}
+
+func TestRemoveResizes(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"A", "B", "C", "", "", ""},
+		size: 3,
+		head: 0,
+	}
+
+	actual, err := list.Remove(2)
+	assert.NoError(t, err)
+	assert.Equal(t, "C", actual)
+	assert.Equal(t, 2, list.size)
+	assert.Equal(t, 0, list.head)
+	assert.Equal(t, []string{"A", "B", "", ""}, list.data)
+}
+
+func TestRealign(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"", "A", "B", "C", ""},
+		size: 3,
+		head: 1,
+	}
+	newData := make([]string, 7)
+	list.realign(newData)
+	assert.Equal(t, 0, list.head)
+	assert.Equal(t, []string{"A", "B", "C", "", "", "", ""}, list.data)
+}
+
+func TestRemoveResizeRealign(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"", "A", "B", "C", "", ""},
+		size: 3,
+		head: 1,
+	}
+
+	actual, err := list.Remove(0)
+	assert.NoError(t, err)
+	assert.Equal(t, "A", actual)
+	assert.Equal(t, 2, list.size)
+	assert.Equal(t, 0, list.head)
+	assert.Equal(t, []string{"B", "C", "", ""}, list.data)
+}
