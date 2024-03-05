@@ -39,7 +39,10 @@ func (al *ArrayList[T]) Add(i int, x T) error {
 
 func (al *ArrayList[T]) Get(i int) (T, error) {
 	var nullValue T
-	return nullValue, nil
+	if i < 0 || i >= al.size {
+		return nullValue, fmt.Errorf("Index out of range: %d", i)
+	}
+	return al.data[utils.Mod(i+al.head, len(al.data))], nil
 }
 
 func (al *ArrayList[T]) Remove(i int) (T, error) {

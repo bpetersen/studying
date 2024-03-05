@@ -54,9 +54,33 @@ func TestSetReturnsExistingItem(t *testing.T) {
 		head: 2,
 	}
 
-	result, err := list.Set(0, "B")
+	actual, err := list.Set(0, "B")
 
 	assert.NoError(t, err)
-	assert.Equal(t, result, "A")
+	assert.Equal(t, "A", actual)
 	assert.Equal(t, []string{"", "", "B"}, list.data)
+}
+
+func TestGetReturnsIndexOutOfRangeErrors(t *testing.T) {
+	list := NewArrayList[string]()
+	_, underErr := list.Get(-1)
+
+	assert.ErrorContains(t, underErr, "Index out of range")
+
+	_, overErr := list.Get(1)
+
+	assert.ErrorContains(t, overErr, "Index out of range")
+}
+
+func TestGetReturnsExistingItem(t *testing.T) {
+	list := ArrayList[string]{
+		data: []string{"", "", "A"},
+		size: 1,
+		head: 2,
+	}
+
+	actual, err := list.Get(0)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "A", actual)
 }
