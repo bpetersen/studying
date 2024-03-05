@@ -1,7 +1,9 @@
 package arraylist
 
 import (
+	"fmt"
 	"open_data_structures/pkg/collections"
+	"open_data_structures/pkg/utils"
 )
 
 var _ collections.List[int] = &ArrayList[int]{}
@@ -9,9 +11,9 @@ var _ collections.List[int] = &ArrayList[int]{}
 const DEFAULT_INITIAL_CAPACITY = 10
 
 type ArrayList[T any] struct {
-	data []T
-	size int
-	head int
+	data []T //The backing slice that contains the data
+	size int //The number of elements in the list
+	head int //The index of the first element in the backing slice
 }
 
 func NewArrayList[T any](initialCapacity ...int) *ArrayList[T] {
@@ -47,5 +49,11 @@ func (al *ArrayList[T]) Remove(i int) (T, error) {
 
 func (al *ArrayList[T]) Set(i int, x T) (T, error) {
 	var nullValue T
-	return nullValue, nil
+	if i < 0 || i >= al.size {
+		return nullValue, fmt.Errorf("Index out of range: %d", i)
+	}
+	index := utils.Mod(i+al.head, len(al.data))
+	result := al.data[index]
+	al.data[index] = x
+	return result, nil
 }
