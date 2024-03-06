@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestPushPopSize(t *testing.T) {
+func TestAll(t *testing.T) {
 	stack := NewArrayStack[string]()
 
 	stack.Push("A")
@@ -40,5 +40,5 @@ func TestPushPopSize(t *testing.T) {
 	assert.Equal(t, 0, stack.Size())
 
 	_, err := stack.Pop()
-	assert.ErrorContains(t, err, "Stack is empty")
+	assert.ErrorContains(t, err, "ArrayStack is empty")
 }

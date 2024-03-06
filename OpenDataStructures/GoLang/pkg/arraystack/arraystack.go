@@ -11,7 +11,7 @@ var _ collections.Stack[int] = &ArrayStack[int]{}
 const DEFAULT_INITIAL_CAPACITY = 1
 
 type ArrayStack[T any] struct {
-	data *arraylist.ArrayList[T] //The backing slice that contains the data
+	data *arraylist.ArrayList[T]
 }
 
 func (s ArrayStack[T]) String() string {
@@ -35,7 +35,7 @@ func (as *ArrayStack[T]) Push(x T) {
 func (as *ArrayStack[T]) Pop() (T, error) {
 	value, err := as.data.Remove(as.data.Size() - 1)
 	if err != nil {
-		return *new(T), fmt.Errorf("Stack is empty")
+		return *new(T), fmt.Errorf("ArrayStack is empty")
 	}
 	return value, err
 }
