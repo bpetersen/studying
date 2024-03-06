@@ -18,7 +18,7 @@ func (s ArrayStack[T]) String() string {
 	return fmt.Sprintf("{data: %v}", s.data)
 }
 
-func NewArrayStack[T any](initialCapacity ...int) *ArrayStack[T] {
+func NewArrayStack[T any]() *ArrayStack[T] {
 	return &ArrayStack[T]{
 		data: arraylist.NewArrayList[T](),
 	}
