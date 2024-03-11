@@ -16,7 +16,7 @@ type ArrayList[T any] struct {
 	head int //The index of the first element in the backing slice
 }
 
-func (s ArrayList[T]) String() string {
+func (s *ArrayList[T]) String() string {
 	return fmt.Sprintf("{size: %d, head: %d, data: %v}", s.size, s.head, s.data)
 }
 
