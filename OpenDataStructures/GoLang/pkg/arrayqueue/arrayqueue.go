@@ -27,7 +27,7 @@ func (aq *ArrayQueue[T]) Enqueue(x T) {
 }
 
 func (aq *ArrayQueue[T]) Dequeue() (T, error) {
-	value, err := aq.data.Remove(aq.data.Size() - 1)
+	value, err := aq.data.Remove(0)
 	if err != nil {
 		return *new(T), fmt.Errorf("ArrayQueue is empty")
 	}

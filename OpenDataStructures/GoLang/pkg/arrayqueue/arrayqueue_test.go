@@ -20,11 +20,11 @@ func TestAll(t *testing.T) {
 	assert.Equal(t, 5, queue.Size())
 
 	actual, _ = queue.Dequeue()
-	assert.Equal(t, "E", actual)
+	assert.Equal(t, "A", actual)
 	assert.Equal(t, 4, queue.Size())
 
 	actual, _ = queue.Dequeue()
-	assert.Equal(t, "D", actual)
+	assert.Equal(t, "B", actual)
 	assert.Equal(t, 3, queue.Size())
 
 	actual, _ = queue.Dequeue()
@@ -32,11 +32,11 @@ func TestAll(t *testing.T) {
 	assert.Equal(t, 2, queue.Size())
 
 	actual, _ = queue.Dequeue()
-	assert.Equal(t, "B", actual)
+	assert.Equal(t, "D", actual)
 	assert.Equal(t, 1, queue.Size())
 
 	actual, _ = queue.Dequeue()
-	assert.Equal(t, "A", actual)
+	assert.Equal(t, "E", actual)
 	assert.Equal(t, 0, queue.Size())
 
 	_, err := queue.Dequeue()
