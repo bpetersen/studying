@@ -66,11 +66,17 @@ func (sll *SLList[T]) Add(i int, x T) error {
 	}
 
 	if sll.size == 0 {
+		//first node
 		sll.head = &newNode
 		sll.tail = &newNode
 	} else if i == 0 {
+		//head
 		newNode.next = sll.head
 		sll.head = &newNode
+	} else if i == sll.size {
+		sll.tail.next = &newNode
+		sll.tail = &newNode
+		//Tail
 	} else {
 		var prev = sll.getNode(i)
 		newNode.next = prev.next
