@@ -11,7 +11,7 @@ type SLList[T any] struct {
 	size int
 }
 
-func (s SLList[T]) String() string {
+func (s *SLList[T]) String() string {
 	return fmt.Sprintf("{size: %v, head: %v, tail: %v}", s.size, s.head, s.tail)
 }
 
@@ -20,7 +20,7 @@ type node[T any] struct {
 	next *node[T]
 }
 
-func (s node[T]) String() string {
+func (s *node[T]) String() string {
 	return fmt.Sprintf("{data: %v, next: %v}", s.data, s.next)
 }
 
