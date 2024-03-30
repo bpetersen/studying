@@ -157,7 +157,27 @@ func (sl *SkipList[T]) Find(x T) (T, error) {
 	return predNode.next[0].data, nil
 }
 
-func (sl *SkipList[T]) Remove(x T) T {
-	var nullValue T
-	return nullValue
+func (sl *SkipList[T]) Remove(x T) bool {
+	removed := false
+	u := sl.sentinel
+	h := sl.GetHeight()
+	newHeight := h
+	for h >= 0 {
+		for u.next[h] != nil && sl.comparer(u.next[h].data, x) < 0 {
+			u = u.next[h]
+		}
+		if u.next[h] != nil && sl.comparer(u.next[h].data, x) == 0 {
+			removed = true
+			//we found the node we need to remove
+			u.next[h] = u.next[h].next[h]
+			if u == sl.sentinel && u.next[h] == nil {
+				newHeight--
+			}
+		}
+		h--
+	}
+	if newHeight < sl.GetHeight() {
+		sl.resize(newHeight)
+	}
+	return removed
 }

@@ -1,7 +1,6 @@
 package skiplist
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -110,11 +109,8 @@ func TestGetPredNode(t *testing.T) {
 	var list, nodes = getTestSkipList()
 
 	var actualNode = list.getPredNode("F")
-	fmt.Printf("actual node: %v", actualNode)
 
 	assert.Equal(t, nodes["D"].data, actualNode.data)
-	fmt.Println(list)
-
 }
 
 func TestFindNodeEqual(t *testing.T) {
@@ -143,13 +139,7 @@ func TestFindNodeGreaterThan(t *testing.T) {
 func TestAddNode(t *testing.T) {
 	list, nodes := getTestSkipList()
 
-	fmt.Println("BEFORE ADD")
-	fmt.Println(list)
-
 	newNode, wasAdded := list.addNode("G", 1)
-
-	fmt.Println("AFTER ADD")
-	fmt.Println(list)
 
 	assert.Equal(t, true, wasAdded)
 	assert.Equal(t, "G", newNode.data)
@@ -185,11 +175,7 @@ func TestAddNodeHeight0(t *testing.T) {
 func TestAddNodeHeightResizeSentinel(t *testing.T) {
 	list, _ := getTestSkipList()
 
-	fmt.Println("BEFORE ADD")
-	fmt.Println(list)
 	newNode, wasAdded := list.addNode("A", 4)
-	fmt.Println("AFTER ADD")
-	fmt.Println(list)
 
 	assert.Equal(t, true, wasAdded)
 	assert.Equal(t, "A", newNode.data)
@@ -209,4 +195,43 @@ func TestAddNodeHeightResizeSentinel(t *testing.T) {
 	actual, err := list.Find("A")
 	assert.NoError(t, err)
 	assert.Equal(t, "A", actual)
+}
+
+func TestRemoveMiddle(t *testing.T) {
+	list, nodes := getTestSkipList()
+
+	removed := list.Remove("D")
+
+	assert.Equal(t, true, removed)
+	assert.Equal(t, "F", nodes["B"].next[0].data)
+	assert.Equal(t, "H", list.sentinel.next[1].data)
+}
+
+func TestRemoveFirst(t *testing.T) {
+	list, _ := getTestSkipList()
+
+	removed := list.Remove("B")
+
+	assert.Equal(t, true, removed)
+	assert.Equal(t, "D", list.sentinel.next[0].data)
+}
+
+func TestRemoveLast(t *testing.T) {
+	list, nodes := getTestSkipList()
+
+	removed := list.Remove("N")
+
+	assert.Equal(t, true, removed)
+	assert.Nil(t, nodes["L"].next[0])
+}
+
+func TestRemoveAndReduceHeight(t *testing.T) {
+	list, _ := getTestSkipList()
+
+	removed := list.Remove("H")
+
+	assert.Equal(t, true, removed)
+	assert.Equal(t, 1, list.GetHeight())
+
+	list.addNode("H", 5)
 }
