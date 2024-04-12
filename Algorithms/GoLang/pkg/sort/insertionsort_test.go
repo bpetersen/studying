@@ -30,3 +30,11 @@ func TestInsertionSort(t *testing.T) {
 	actual := InsertionSort[int](utils.IntComparer, nums)
 	assert.Equal(t, expected, actual)
 }
+
+func TestInsertionSortDescending(t *testing.T) {
+	nums := []int{4, 3, 2, 1, 7, 8, 9, 5, 6}
+	expected := []int{9, 8, 7, 6, 5, 4, 3, 2, 1}
+
+	actual := InsertionSort[int](utils.IntComparerDescending, nums)
+	assert.Equal(t, expected, actual)
+}

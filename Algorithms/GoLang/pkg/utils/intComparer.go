@@ -9,3 +9,12 @@ func IntComparer(a int, b int) int {
 	}
 	return 0
 }
+
+func IntComparerDescending(a int, b int) int {
+	if b > a {
+		return 1
+	} else if b < a {
+		return -1
+	}
+	return 0
+}
