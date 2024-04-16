@@ -50,3 +50,31 @@ func TestBinaryTreePreOrderTraversal(t *testing.T) {
 	binaryTree.ForEach(forEach, PreOrder)
 	assert.Equal(t, []int{3, 1, 0, 2, 5, 4, 6}, actual)
 }
+
+func TestBinaryTreeLevelOrderTraversal(t *testing.T) {
+
+	actual := []int{}
+	forEach := func(i int) {
+		actual = append(actual, i)
+	}
+
+	binaryTree := buildBalancedBinaryTree()
+
+	binaryTree.ForEach(forEach, LevelOrder)
+	assert.Equal(t, []int{3, 1, 5, 0, 2, 4, 6}, actual)
+}
+
+//func TestBinaryTreeIterator(t *testing.T) {
+//	binarytree := buildBalancedBinaryTree()
+//
+//	it := NewBinaryTreeIterator[int](binarytree, InOrder)
+//
+//	actual := []int{}
+//
+//	for it.HasNext() {
+//		data := it.Next()
+//		actual = append(actual, data)
+//	}
+//
+//	assert.Equal(t, []int{0, 1, 2, 3, 4, 5, 6}, actual)
+//}
