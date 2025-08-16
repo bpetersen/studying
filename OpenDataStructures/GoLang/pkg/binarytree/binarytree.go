@@ -1,7 +1,6 @@
 package binarytree
 
 import (
-	"fmt"
 	"open_data_structures/pkg/arrayqueue"
 )
 
